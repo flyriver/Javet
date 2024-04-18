@@ -20,6 +20,7 @@ WORKDIR /
 
 ARG JAVET_NODE_VERSION=20.12.2
 ARG JAVET_V8_VERSION=12.4.254.9
+ARG JOBS
 
 # Update Ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
@@ -79,7 +80,7 @@ RUN python3 patch_node_build.py -p ./
 RUN ./configure --enable-static --without-intl
 RUN python3 patch_node_build.py -p ./
 RUN rm patch_node_build.py
-RUN make -j4
+RUN make -j ${JOBS:-$(nproc)}
 RUN echo Node.js build is completed.
 
 # Prepare Javet Build Environment
