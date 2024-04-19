@@ -1,0 +1,24 @@
+# This file is used to build the all-in-one image for Javet.
+#
+# To use, run the following command under the project root directory:
+#   docker compose -f docker/linux-x86_64/build_all_in_one.yaml build
+#
+# Notes:
+# If you have multiple docker builders, you must use the default builder to build, for example:
+#   docker compose -f docker/linux-x86_64/build_all_in_one.yaml build --builder default
+#
+services:
+  base-all-in-one:
+    build:
+      context: ../..
+      dockerfile: docker/linux-x86_64/base_all_in_one.Dockerfile
+    image: sjtucaocao/javet:3.1.1
+    pull_policy: never
+  javet-all-in-one:
+    build:
+      context: ../..
+      dockerfile: docker/linux-x86_64/build_all_in_one.Dockerfile
+    image: javet:local
+    depends_on:
+      - base-all-in-one
+    pull_policy: never
